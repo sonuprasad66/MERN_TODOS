@@ -19,7 +19,21 @@ export const GetTodo = () => {
       .catch((err) => console.log(err));
   };
 
-  const handleDelete = () => {};
+  const handleDelete = (_id) => {
+    // console.log(_id);
+    fetch(`http://localhost:7000/delete/`, {
+      method: "DELETE",
+      // mode: "no-cors",
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify(_id),
+    })
+      .then((res) => res.json())
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  };
 
   useEffect(() => {
     getData();
@@ -43,7 +57,7 @@ export const GetTodo = () => {
           <h2>{item.title}</h2>
           <h2>{item.tag}</h2>
           <button>{item.status}</button>
-          <button onClick={handleDelete}>DELETE</button>
+          <button onClick={() => handleDelete(item._id)}>DELETE</button>
         </div>
       ))}
     </div>
