@@ -20,30 +20,17 @@ todosRouter.post("/create", authentication, async (req, res) => {
 });
 
 todosRouter.delete("/delete", authentication, async (req, res) => {
-  const { user_id } = req.body;
-  // const { _id } = req.params;
-  // const user = await todosModel.find({ user_id });
-  // const { _id } = user;
-  console.log(user_id);
-  await todosModel.deleteOne({ user_id: user_id });
-  res.send({ msg: "data deleted successfull" });
+  const { user_id, _id } = req.body;
+  console.log(user_id, _id);
+  const data = await todosModel.findOneAndDelete({ user_id, _id });
+
+  res.send({ msg: "data deleted successfull", deleted: data });
 });
 
-// todosRouter.delete("/delete", authentication, async (req, res) => {
-//   let { _id, user_id } = req.body;
-//   console.log(_id, user_id);
-//   const data  = await todosModel.find({user_id});
-//   console.log(data);
-//   // await todosModel.findOneAndDelete({ user_id: user_id, _id: _id });
-//   let remaining = await todosModel.find({ user_id: user_id });
-//   console.log(remaining);
-//   res.send(remaining);
-// });
-
 todosRouter.patch("/patch", authentication, async (req, res) => {
-  const { user_id } = req.body;
-  console.log(user_id);
-  await todosModel.updateOne({ user_id }, { $set: req.body });
+  const { user_id, _id, title, tag } = req.body;
+  // console.log(user_id, _id);
+  await todosModel.findOneAndUpdate({ user_id, _id }, { title, tag });
   res.send({ msg: "data updated successfull" });
 });
 
